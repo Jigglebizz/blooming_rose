@@ -57,13 +57,13 @@ void drawRing(float angle_shift, float scale) {
     float r = (flower_radius + (amplitude * sin(wave_func))) * scale;
     
     float sat = 100f - 100f * (r / (float)(flower_radius + amplitude));
-    float hue = cos(millis() / (time_divider * 10f));
+    float hue = 100 * (millis() / (time_divider * 10f));//0.5f + 0.5f * cos(millis() / (time_divider * 10f));
     
     // How do we draw the dot?
     // This includes our polar-cartesian equation.
     pg.colorMode(HSB, 100f);
-    pg.stroke(hue * sat, sat, 100f);
-    pg.fill(hue * sat, 75, 100f);
+    pg.stroke((hue + sat) % 100, sat, 100f);
+    pg.fill((hue + sat) % 100, 75, 100f);
     pg.ellipse(x_size / 2 + r * cos(theta + angle_shift), 
             y_size / 2 + r * sin(theta + angle_shift), 
             radius * scale * (0.5f + sin(theta * waves + (theta / i + 20) + (millis() / time_divider)) / 2), 
