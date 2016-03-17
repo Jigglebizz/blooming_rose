@@ -1,27 +1,42 @@
-int x_size = 1200;
-int y_size = 1200;
+int x_size = 1000;
+int y_size = 1000;
   
 int density = 50;
 int waves = 3;
 float radius = 12;
 int rings = 3;
-int amplitude = 100;
+int amplitude = 150;
 float time_divider = 800f;
-int flower_radius = 400;
+int flower_radius = 333;
 int flowers = 3;
 float scale_factor = 0.45f;
+int trail_density = 25;
+
+PGraphics pg;
+boolean firstDraw;
 
 void setup() {
-  size(1200, 1200);
-  colorMode(HSB, 100);
+  size(1000, 1000);
+  
+  pg = createGraphics(1000, 1000);
+  firstDraw = true;
 }
 
 void draw() {
-  background(0);  
+  pg.beginDraw();
+  if (firstDraw) {
+     pg.background(0);
+     firstDraw = false;
+  }
+  pg.fill(0, 0, 0, trail_density);
+  pg.rect(0, 0, x_size, y_size);
+  //pg.background(0); 
   
   for (int i = 0; i < flowers; i++) {
     drawFlower(1f - scale_factor * ((float)i / (float)flowers));
   }
+  pg.endDraw();
+  image(pg, 0, 0);
 }
 
 void drawFlower(float scale) {
@@ -46,9 +61,10 @@ void drawRing(float angle_shift, float scale) {
     
     // How do we draw the dot?
     // This includes our polar-cartesian equation.
-    stroke(hue * sat, sat, 100);
-    fill(hue * sat, 75, 100);
-    ellipse(x_size / 2 + r * cos(theta + angle_shift), 
+    pg.colorMode(HSB, 100f);
+    pg.stroke(hue * sat, sat, 100f);
+    pg.fill(hue * sat, 75, 100f);
+    pg.ellipse(x_size / 2 + r * cos(theta + angle_shift), 
             y_size / 2 + r * sin(theta + angle_shift), 
             radius * scale * (0.5f + sin(theta * waves + (theta / i + 20) + (millis() / time_divider)) / 2), 
             radius * scale * (0.5f + sin(theta * waves + (theta / i + 20) + (millis() / time_divider)) / 2));
