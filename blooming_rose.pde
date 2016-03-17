@@ -11,6 +11,7 @@ int flower_radius = 333;
 int flowers = 3;
 float scale_factor = 0.45f;
 int trail_density = 25;
+float color_scale = 0.2f;
 
 PGraphics pg;
 boolean firstDraw;
@@ -62,8 +63,8 @@ void drawRing(float angle_shift, float scale) {
     // How do we draw the dot?
     // This includes our polar-cartesian equation.
     pg.colorMode(HSB, 100f);
-    pg.stroke((hue + sat) % 100, sat, 100f);
-    pg.fill((hue + sat) % 100, 75, 100f);
+    pg.stroke((hue + sat * color_scale) % 100, sat, 100f);
+    pg.fill((hue + sat * color_scale) % 100, 75, 100f);
     pg.ellipse(x_size / 2 + r * cos(theta + angle_shift), 
             y_size / 2 + r * sin(theta + angle_shift), 
             radius * scale * (0.5f + sin(theta * waves + (theta / i + 20) + (millis() / time_divider)) / 2), 
