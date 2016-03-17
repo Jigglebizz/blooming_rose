@@ -1,18 +1,18 @@
-int x_size = 600;
-int y_size = 600;
+int x_size = 1200;
+int y_size = 1200;
   
-int density = 100;
+int density = 50;
 int waves = 3;
-float radius = 6;
+float radius = 12;
 int rings = 3;
-int amplitude = 50;
+int amplitude = 100;
 float time_divider = 800f;
-int flower_radius = 200;
-int flowers = 2;
-float scale_factor = 0.5f;
+int flower_radius = 400;
+int flowers = 3;
+float scale_factor = 0.45f;
 
 void setup() {
-  size(600, 600);
+  size(1200, 1200);
   colorMode(HSB, 100);
 }
 
@@ -33,7 +33,7 @@ void drawFlower(float scale) {
 }
 
 void drawRing(float angle_shift, float scale) {
-  for(int i = 0; i < density; i++) {
+  for(int i = 0; i < density + 1; i++) {
     
     // Where do we draw the dot?
     // Calculate our polar coordinates (theta/r vs x/y)
@@ -41,10 +41,13 @@ void drawRing(float angle_shift, float scale) {
     float wave_func = theta * waves + (millis() / time_divider);
     float r = (flower_radius + (amplitude * sin(wave_func))) * scale;
     
+    float sat = 100f - 100f * (r / (float)(flower_radius + amplitude));
+    float hue = cos(millis() / (time_divider * 10f));
+    
     // How do we draw the dot?
     // This includes our polar-cartesian equation.
-    stroke(0, 0, 100);
-    fill(0, 0, 100);
+    stroke(hue * sat, sat, 100);
+    fill(hue * sat, 75, 100);
     ellipse(x_size / 2 + r * cos(theta + angle_shift), 
             y_size / 2 + r * sin(theta + angle_shift), 
             radius * scale * (0.5f + sin(theta * waves + (theta / i + 20) + (millis() / time_divider)) / 2), 
