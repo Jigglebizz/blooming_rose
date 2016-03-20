@@ -1,0 +1,12 @@
+int density = 50;
+int waves = 3;
+float radius = 26;
+int rings = 2;
+int amplitude = 150;
+float time_divider = 800f;
+int flower_radius = 333;
+int flowers = 1;
+float scale_factor = 0.45f;
+int trail_density = 5;
+float color_scale = 0.2f;
+

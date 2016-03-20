@@ -10,8 +10,8 @@ float time_divider = 800f;
 int flower_radius = 333;
 int flowers = 3;
 float scale_factor = 0.45f;
-int trail_density = 25;
-float color_scale = 0.2f;
+int trail_density = 20;
+float color_scale = 0.6f;
 
 PGraphics pg;
 boolean firstDraw;
