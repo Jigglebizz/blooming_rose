@@ -1,6 +1,3 @@
-int x_size = 1000;
-int y_size = 1000;
-  
 int density = 50;
 int waves = 3;
 float radius = 12;
@@ -10,8 +7,8 @@ float time_divider = 800f;
 int flower_radius = 333;
 int flowers = 3;
 float scale_factor = 0.45f;
-int trail_density = 20;
-float color_scale = 0.6f;
+int trail_density = 25;
+float color_scale = 0.5f;
 
 PGraphics pg;
 boolean firstDraw;
@@ -19,7 +16,7 @@ boolean firstDraw;
 void setup() {
   size(1000, 1000);
   
-  pg = createGraphics(1000, 1000);
+  pg = createGraphics(width, height);
   firstDraw = true;
 }
 
@@ -30,7 +27,7 @@ void draw() {
      firstDraw = false;
   }
   pg.fill(0, 0, 0, trail_density);
-  pg.rect(0, 0, x_size, y_size);
+  pg.rect(0, 0, width, height);
   //pg.background(0); 
   
   for (int i = 0; i < flowers; i++) {
@@ -65,8 +62,8 @@ void drawRing(float angle_shift, float scale) {
     pg.colorMode(HSB, 100f);
     pg.stroke((hue + sat * color_scale) % 100, sat, 100f);
     pg.fill((hue + sat * color_scale) % 100, 75, 100f);
-    pg.ellipse(x_size / 2 + r * cos(theta + angle_shift), 
-            y_size / 2 + r * sin(theta + angle_shift), 
+    pg.ellipse(width / 2 + r * cos(theta + angle_shift), 
+            height / 2 + r * sin(theta + angle_shift), 
             radius * scale * (0.5f + sin(theta * waves + (theta / i + 20) + (millis() / time_divider)) / 2), 
             radius * scale * (0.5f + sin(theta * waves + (theta / i + 20) + (millis() / time_divider)) / 2));
   } 
