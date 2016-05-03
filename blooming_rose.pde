@@ -98,5 +98,8 @@ void controllerChange(int channel, int number, int value) {
     if (number == 21) {
       trail_density = map(value, 0, 127, 0, 40);
     }
+    if (number == 22) {
+      waves = (int)map(value, 0, 127, 1, 5);
+    }
   }
 }
