@@ -24,6 +24,10 @@ void setup() {
   size(1000, 1000);
   
   MidiBus.list();
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+  // You should set the first number below to the # of the controller you'd like to use.
+  // Check output below when running for the first time
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
   midi = new MidiBus(this, 3, -1);
   
   pg = createGraphics(width, height);
@@ -79,6 +83,46 @@ void drawRing(float angle_shift, float scale) {
   } 
 }
 
+void noteOff(int channel, int pitch, int velocity) {  
+  //println();
+  //println("Note Off:");
+  //println("--------");
+  //println("Channel:"+channel);
+  //println("Pitch:"+pitch);
+  //println("Velocity:"+velocity); // This is kinda dumb. Should always be 0 for noteOff
+  
+  
+  if (channel == 9) {
+    if (pitch == 36) {
+      waves = 1;
+    }
+    else if (pitch == 37) {
+      waves = 2;
+    }
+    else if (pitch == 40) {
+      waves = 3;
+    }
+    else if (pitch == 41) {
+      waves = 4;
+    }
+    else if (pitch == 42) {
+      waves = 5;
+    }
+    else if (pitch == 46) {
+      rings = 1;
+    }
+    else if (pitch == 47) {
+      rings = 2;
+    }
+    else if (pitch == 50) {
+      rings = 3;
+    }
+    else if (pitch == 51) {
+      rings = 4;
+    }
+  }
+}
+
 void controllerChange(int channel, int number, int value) {
   
   //
@@ -96,10 +140,16 @@ void controllerChange(int channel, int number, int value) {
     
     // Correct CC?
     if (number == 21) {
-      trail_density = map(value, 0, 127, 0, 40);
+      trail_density = map(value, 0, 127, 40, 0);
     }
-    if (number == 22) {
-      waves = (int)map(value, 0, 127, 1, 5);
+    else if (number == 22) {
+      scale_factor = map(value, 0, 127, 0, 1.0);
+    }
+    else if (number == 23) {
+      amplitude = (int)map(value, 0, 127, 0, 300);
+    }
+    else if (number == 24) {
+      time_divider = map(value, 0, 127, 500, 1500);
     }
   }
 }
