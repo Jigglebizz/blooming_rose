@@ -7,14 +7,24 @@ float time_divider = 800f;
 int flower_radius = 333;
 int flowers = 3;
 float scale_factor = 0.45f;
-int trail_density = 25;
+float trail_density = 25;
 float color_scale = 0.5f;
+
+// If you get an error related to the midibus library, install it with
+// Sketch->Library->Import Library
+// Type in midibus and install it
+import themidibus.*;
+
+MidiBus midi;
 
 PGraphics pg;
 boolean firstDraw;
 
 void setup() {
   size(1000, 1000);
+  
+  MidiBus.list();
+  midi = new MidiBus(this, 3, -1);
   
   pg = createGraphics(width, height);
   firstDraw = true;
@@ -67,4 +77,26 @@ void drawRing(float angle_shift, float scale) {
             radius * scale * (0.5f + sin(theta * waves + (theta / i + 20) + (millis() / time_divider)) / 2), 
             radius * scale * (0.5f + sin(theta * waves + (theta / i + 20) + (millis() / time_divider)) / 2));
   } 
+}
+
+void controllerChange(int channel, int number, int value) {
+  
+  //
+  // to see your control messages, uncomment the code below (Highlight then Ctrl + / to toggle comments)
+  //
+  //println();
+  //println("Controller Change:");
+  //println("--------");
+  //println("Channel:"+channel);
+  //println("Number:"+number);
+  //println("Value:"+value);
+  
+  // Correct channel?
+  if (channel == 1) {
+    
+    // Correct CC?
+    if (number == 21) {
+      trail_density = map(value, 0, 127, 0, 40);
+    }
+  }
 }
