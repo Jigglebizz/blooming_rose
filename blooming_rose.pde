@@ -9,6 +9,7 @@ int flowers = 3;
 float scale_factor = 0.45f;
 float trail_density = 25;
 float color_scale = 0.5f;
+int time_divider_sign = 1;
 
 // If you get an error related to the midibus library, install it with
 // Sketch->Library->Import Library
@@ -69,7 +70,7 @@ void drawRing(float angle_shift, float scale) {
     float r = (flower_radius + (amplitude * sin(wave_func))) * scale;
     
     float sat = 100f - 100f * (r / (float)(flower_radius + amplitude));
-    float hue = 100 * (millis() / (time_divider * 10f));//0.5f + 0.5f * cos(millis() / (time_divider * 10f));
+    float hue = 100 * (millis() / (abs(time_divider) * 10f));//0.5f + 0.5f * cos(millis() / (time_divider * 10f));
     
     // How do we draw the dot?
     // This includes our polar-cartesian equation.
@@ -77,9 +78,9 @@ void drawRing(float angle_shift, float scale) {
     pg.stroke((hue + sat * color_scale) % 100, sat, 100f);
     pg.fill((hue + sat * color_scale) % 100, 75, 100f);
     pg.ellipse(width / 2 + r * cos(theta + angle_shift), 
-            height / 2 + r * sin(theta + angle_shift), 
-            radius * scale * (0.5f + sin(theta * waves + (theta / i + 20) + (millis() / time_divider)) / 2), 
-            radius * scale * (0.5f + sin(theta * waves + (theta / i + 20) + (millis() / time_divider)) / 2));
+               height / 2 + r * sin(theta + angle_shift), 
+               radius * scale * (0.5f + sin(theta * waves + (theta / i + 20) + (millis() / time_divider)) / 2), 
+               radius * scale * (0.5f + sin(theta * waves + (theta / i + 20) + (millis() / time_divider)) / 2));
   } 
 }
 
@@ -107,6 +108,10 @@ void noteOff(int channel, int pitch, int velocity) {
     }
     else if (pitch == 42) {
       waves = 5;
+    }
+    else if (pitch == 43) {
+      time_divider_sign *= -1;
+      time_divider *= -1;
     }
     else if (pitch == 46) {
       rings = 1;
@@ -149,7 +154,7 @@ void controllerChange(int channel, int number, int value) {
       amplitude = (int)map(value, 0, 127, 0, 300);
     }
     else if (number == 24) {
-      time_divider = map(value, 0, 127, 500, 1500);
+      time_divider = time_divider_sign * map(value, 0, 127, 500, 1500);
     }
   }
 }
